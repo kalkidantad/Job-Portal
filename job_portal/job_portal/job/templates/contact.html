@@ -1,0 +1,26 @@
+{% include "header.html" %}
+{% load static %}
+
+    <div class="section-title">Contact Us</div>
+    <section class="contact">
+        <form action="{% url 'contact'  %}" method="post">
+            {% csrf_token %}
+            <h3>Drop Your Message</h3>
+            <div class="flex">
+                <div class="box">
+                    <p>name <span>*</span></p>
+                    <input type="text" name="name" required maxlength="200" placeholder="enter your name" class="input">
+                </div>
+                <div class="box">
+                    <p>email<span>*</span></p>
+                    <input type="email" name="email" required maxlength="200" placeholder="enter your email" class="input">
+                </div>  
+            </div>
+            <p>Message <span>*</span></p>
+            <textarea name="message" id="" cols="30" rows="10" class="input" required maxlength="1000" placeholder="Enter your message"></textarea>
+            <input type="submit" value="send message" name="send" class="btn">
+        </form>
+    </section>
+{% include "footer.html" %}   
+</body>
+</html>

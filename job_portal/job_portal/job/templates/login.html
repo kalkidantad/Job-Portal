@@ -1,0 +1,27 @@
+{% include "header.html" %}
+{% load static %}
+    
+    <div class="account-form-container" style='background-image: url(static/img/img1.png)'>
+        <section class="account-form">
+            <form action="" method="post">
+                {% csrf_token %}
+                <h3>Welcome Back!</h3>
+                <input type="text" class="input" required name="name" maxlength="50" placeholder="Enter your name">
+                <input type="email" class="input" required name="email" maxlength="50" placeholder="Enter your email">
+                <input type="password" class="input" required name="pass" maxlength="20" placeholder="Enter your password">
+                <p>Don't have an account yet?<a href="{% url 'register' %}">Register Now</a></p>
+                <input type="submit" value="login now" name="submit" class="btn">
+            </form>
+        </section>
+    </div>
+
+
+
+
+<!-- Footer -->
+{% include "footer.html" %}
+   
+   
+    
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% include "header.html" %}
+{% load static %}
+
+<section class="job-details">
+    <h1 class="heading">Job Detail</h1>
+
+    <div class="details">
+        <div class="job-info">
+            <h3 class="outside">Location:</h3>
+            <p><i class="fas fa-map-marker-alt"></i>{{job.location}}</p>
+        </div>
+        <div class="basic-details">
+            <h3>Category:</h3>
+            <p>{{job.category}}</p>
+            <h3>Job Title:</h3>
+            <p>{{job.title}}</p>
+            <h3>Description:</h3>
+            <p>{{job.description}}</p>
+            <h3>Salary:</h3>
+            <p>{{job.salary}} per month</p>
+            <h3>Job Type:</h3>
+            <p>{{job.job_type}}</p>
+            <h3>Posted Date:</h3>
+            <p>{{job.published_date}}</p>
+        </div>
+        <ul>
+            <h3 class="outside">Qualifications:</h3>
+            <li>{{job.qualifications}}</li>
+        </ul>
+        <div class="description">
+            <h3 class="outside">Apply to the company</h3>
+            <!-- <p><a href="{{ job.company.website_url }}" target="_blank">{{ job.company.website_url }}</a></p> -->
+        </div>
+        <form action="{{ job.company.website_url }}" method="get" target="_blank" class="flex-btn">
+            <input type="submit" value="go to the website" class="btn">
+            <button type="submit" class="save"><i class="far fa-heart"></i><span>Save job</span></button>
+        </form>
+        
+    </div>
+</section>
+
+    
+
+
+
+
+{% include "footer.html" %}
+
+   
+    
+</body>
+</html>

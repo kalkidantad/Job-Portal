@@ -1,0 +1,123 @@
+
+ {% include "header.html" %}
+ {% load static %}
+ <head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+ </head>
+<div class="home-container" style='background-image: url(static/img/img1.png)'>
+    <section class="home">
+        <form id="search-form" method="POST" action="">
+            {% csrf_token %}
+            <h3>Find Your Next Job</h3>
+            <p>Job Title <span>*</span></p>
+            <input type="text" name="title" placeholder="keyword or category" required maxlength="20" class="input">
+            <p>Job Location</p>
+            <input id="job-location" type="text" name="location" placeholder="city, state or country"  maxlength="20" class="input">
+            <input type="submit" value="search job" class="btn" name="search">
+        </form>
+
+    </section>
+    
+</div>
+
+<!-- jobs section starts -->
+<section class="jobs-container" id="jobs-container">
+    <h1 class="heading">Jobs Available </h1>
+    <div class="center-container" style="justify-content: center; display: flex;">
+        <div id="no-matches" class="btn" style="display: none; text-align: center;  background-color: rgba(202, 0, 0, 0.973); width: 45%; justify-content: center;">
+        No matches found. Please try again.
+        </div>
+    </div>
+
+    <div class="box-container">
+        {% for job in filteredJobs %}
+        <div class="box  job-box {% if forloop.counter > 3 %}hidden{% endif %}">
+            <div class="company">
+                <div>
+                    <h3>{{ job.company }}</h3>
+                    <p>{{ job.published_date }}</p>  
+                </div>
+            </div>
+            <h3 class="job-title">{{ job.title }}</h3>
+            <p class="location"><i class="fas fa-map-marker-alt"></i><span>{{ job.location }}</span></p>
+            <div class="tags">
+                <p><i class="fa-solid fa-dollar-sign"></i><span>{{ job.salary }}</span></p>
+                <p><i class="fa-solid fa-briefcase"></i><span>{{ job.job_type }}</span></p>
+            </div>
+            <div class="flex-btn">
+                <a href="{% url 'view_job'  job.id %}" class="btn">View Details</a>
+                <button type="submit" class="far fa-heart" name="save"></button>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    <div style="text-align :center; margin-top: 2rem;">
+        <a href="{% url 'job'  %}" class="btn" id="view-all-button">View all</a>
+    </div>
+</section>
+<!-- jobs section ends -->
+
+<!-- category section starts -->
+<section class="category">
+    <h1 class="heading">Job Categories</h1>
+    <div class="box-container">
+        {% for job_count in jobCounts %}
+        
+            <a href="" class="box">
+            <i class="fa-solid fa-list"></i>
+            <div>
+                <h3>{{ job_count.category__name }}</h3>
+                <span>{{ job_count.total }} jobs</span>
+            </div>
+            </a>
+        {% endfor %}
+</section>
+<!-- category section ends -->
+
+<!-- Footer -->
+{% include "footer.html" %}
+
+<script>
+
+// for view all
+document.getElementById('view-all-button').addEventListener('click', function(event) {
+    event.preventDefault();
+    let jobBoxes = document.getElementsByClassName('job-box');
+    for (let i = 0; i < jobBoxes.length; i++) {
+        jobBoxes[i].classList.remove('hidden');
+    }
+});
+
+// for job title and location filter
+
+document.getElementById('search-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let title = document.getElementsByName('title')[0].value.toLowerCase();
+    let location = document.getElementsByName('location')[0].value.toLowerCase();
+    let jobBoxes = document.getElementsByClassName('job-box');
+    let matchFound = false;
+    for (let i = 0; i < jobBoxes.length; i++) {
+        let jobTitle = jobBoxes[i].getElementsByClassName('job-title')[0].innerText.toLowerCase();
+        let jobLocation = jobBoxes[i].getElementsByClassName('location')[0].innerText.toLowerCase();
+        if (jobTitle.includes(title) && jobLocation.includes(location)) {
+            jobBoxes[i].style.display = '';
+            matchFound = true;
+        } else {
+            jobBoxes[i].style.display = 'none';
+        }
+    }
+    if (!matchFound) {
+        document.getElementById('no-matches').style.display = 'block';
+    } else {
+        document.getElementById('no-matches').style.display = 'none';
+    }
+    document.getElementById('jobs-container').scrollIntoView({behavior: "smooth"});
+});
+
+
+
+  </script>
+  <script src="{% static 'js/script.js' %}"></script>
+   
+</body>
+</html>

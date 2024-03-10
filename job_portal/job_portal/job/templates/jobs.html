@@ -1,0 +1,112 @@
+{% include "header.html" %}
+{% load static %}
+
+    <!-- job filter section starts -->
+    <section class="job-filter">
+        <h1 class="heading"> In-depth Search </h1>
+        <form action="" method="post" id="search-form">
+            {% csrf_token %}
+            <div class="flex">
+                <div class="box">
+                    <p>job title<span>*</span></p>
+                    <input type="text" name="title" placeholder="keyword or category" required maxlength="20" class="input">
+                </div>
+                <div class="box">
+                    <p>Job Location<span>*</span></p>
+                    <input type="text" name="location" placeholder="city, state or country" required  maxlength="20" class="input">
+                </div>
+                <div class="box">
+                    <p>Salary<span>*</span></p>
+                    <input type="text" name="salary" placeholder="estimated salary" required  maxlength="20" class="input">
+                </div>
+                <div class="box">
+                    <p>Job Type<span>*</span></p>
+                    <input type="text" name="job_type" placeholder="fulltime, part-time..." required  maxlength="20" class="input">
+                </div> 
+            </div>
+            <input type="submit" value="search job" class="btn" name="search" >
+        </form>
+    </section>
+    <section class="jobs-container" id="jobs-container">
+        <h1 class="heading">All Jobs </h1>
+        <div class="center-container" style="justify-content: center; display: flex;">
+
+            <div id="no-matches" class="btn" style="display: none; text-align: center;  background-color: rgba(202, 0, 0, 0.973); width: 45%; justify-content: center;">
+                No matches found. Please try again.
+            </div>
+        </div>
+        <div class="box-container">
+            {% for job in filteredJobs %}
+            <div class="box  job-box {% if forloop.counter > 3 %}hidden{% endif %}">
+                <div class="company">
+                    <div>
+                        <h3>{{ job.company }}</h3>
+                        <p>{{ job.published_date }}</p>  
+                    </div>
+                </div>
+                <h3 class="job-title">{{ job.title }}</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i><span>{{ job.location }}</span></p>
+                <div class="tags">
+                    <p><i class="fa-solid fa-dollar-sign"></i><span>{{ job.salary }}</span></p>
+                    <p><i class="fa-solid fa-briefcase"></i><span>{{ job.job_type }}</span></p>
+                </div>
+                <div class="flex-btn">
+                    <!-- You can modify the href to link to a specific job detail page -->
+                    <a href="{% url 'view_job'  job.id %}" class="btn">View Details</a>
+                    <button type="submit" class="far fa-heart" name="save"></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div style="text-align :center; margin-top: 2rem;">
+            <a href="{% url 'job'  %}" class="btn btn-view-all" id="view-all-button">View all</a>
+        </div>
+    </section>
+<!-- Footer -->
+{% include "footer.html" %}
+
+<script>
+   // for view all
+document.getElementById('view-all-button').addEventListener('click', function(event) {
+    event.preventDefault();
+    let jobBoxes = document.getElementsByClassName('job-box');
+    for (let i = 0; i < jobBoxes.length; i++) {
+        jobBoxes[i].classList.remove('hidden');
+    }
+});
+
+
+document.getElementById('search-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let title = document.getElementsByName('title')[0].value.toLowerCase();
+    let location = document.getElementsByName('location')[0].value.toLowerCase();
+    let salary = document.getElementsByName('salary')[0].value.toLowerCase();
+    let jobType = document.getElementsByName('job type')[0].value.toLowerCase();
+    let jobBoxes = document.getElementsByClassName('job-box');
+    let matchFound = false;
+    for (let i = 0; i < jobBoxes.length; i++) {
+        let jobTitle = jobBoxes[i].getElementsByClassName('job-title')[0].innerText.toLowerCase();
+        let jobLocation = jobBoxes[i].getElementsByClassName('location')[0].innerText.toLowerCase();
+        let jobSalary = jobBoxes[i].getElementsByClassName('tags')[0].children[0].innerText.toLowerCase();
+        let jobJobType = jobBoxes[i].getElementsByClassName('tags')[0].children[1].innerText.toLowerCase();
+        if (jobTitle.includes(title) && jobLocation.includes(location) && jobSalary.includes(salary) && jobJobType.includes(jobType)) {
+            jobBoxes[i].style.display = '';
+            matchFound = true;
+        } else {
+            jobBoxes[i].style.display = 'none';
+        }
+    }
+    if (!matchFound) {
+        document.getElementById('no-matches').style.display = 'block';
+    } else {
+        document.getElementById('no-matches').style.display = 'none';
+    }
+    document.getElementById('jobs-container').scrollIntoView({behavior: "smooth"});
+});
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% include "header.html" %}
+{% load static %}    
+
+    <div class="account-form-container">
+        <section class="account-form">
+            <form action="" method="post">
+                {% csrf_token %}
+                <h3>Create New Account</h3>
+                <input type="text" class="input" required name="name" maxlength="50" placeholder="Enter your name">
+                <input type="email" class="input" required name="email" maxlength="50" placeholder="Enter your email">
+                <input type="password" class="input" required name="password1" maxlength="20" placeholder="Enter your password">
+                <input type="password" class="input" required name="password2" maxlength="20" placeholder="Confirm your password">
+                <p>Already have an account?<a href="{% url 'login'  %}">LogIn Now</a></p>
+                <input type="submit" value="register now" name="submit" class="btn">
+            </form>
+            
+        </section>
+    </div>
+
+
+
+
+
+<!-- Footer -->
+{% include "footer.html" %}
+
+  
+   
+    
+</body>
+</html>

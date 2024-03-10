@@ -1,0 +1,47 @@
+{% include "header.html" %}
+{% load static %}
+
+<div class="section-title">About Us</div>
+<section class="contact">
+    <div class="box-container">
+        <div class="box">
+            <i class="fas fa-phone"></i>
+            <a href="#">{{company_info.phone}}</a>
+        </div>
+        <div class="box">
+            <i class="fas fa-envelope"></i>
+            <a href="#">{{ company_info.email }} </a> 
+        </div>
+        <div class="box">
+            <i class="fas fa-map-marker-alt"></i>
+            <a href="#">{{company_info.location}}</a>
+        </div>
+    </div>
+</section>
+
+    <section class="about">
+        <div class="image-container">
+            <img src="{{ company_info.image.url }}" alt="{{ company_info.name }}">
+        </div>
+        <div class="box">
+            <h3>Why choose us?</h3>
+            <p>{{company_info.description}}</p>
+            <p>{{company_info.why_choose_us}}</p>
+            <a href="{% url 'contact'  %}" class="btn">Contact Us</a>
+        </div>
+    </section>
+   
+    
+    
+
+
+
+
+<!-- Footer -->
+{% include "footer.html" %}
+  
+    
+   
+    
+</body>
+</html>
